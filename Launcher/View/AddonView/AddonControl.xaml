@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="Launcher.View.AddonView.AddonControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Launcher.View.AddonView"
+             mc:Ignorable="d" 
+             d:DesignHeight="215" d:DesignWidth="200">
+    <Border Name="Border" BorderThickness="0" BorderBrush="#FF2DCB70">
+
+
+        <Grid MouseEnter="Container_MouseEnter" MouseLeave="Container_MouseLeave">
+            <Grid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Show full sized image" Click="MenuItem_Click"/>
+                </ContextMenu>
+            </Grid.ContextMenu>
+            <Image Name="Background" Stretch="Fill"/>
+            <Grid Name="Container"  Margin="0,190,0,0">
+                <StackPanel>
+
+
+                    <Grid Background="#E5000000" Height="215"  >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="2*"/>
+
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Label Name="NameLabel" Content="GearScore" Panel.ZIndex="100" Foreground="White" HorizontalAlignment="Center" FontWeight="Thin"/>
+                            <ProgressBar Maximum="100" Name="TopProgressBar" Visibility="Hidden"   Background="{x:Null}" BorderBrush="{x:Null}"/>
+                        </Grid>
+
+                        <ScrollViewer Grid.Row="1">
+                            <TextBlock Name="DescriptionTextBlock" Grid.Row="1" Text="want to insert an Image inside my Polygon, possibly at the center of the Polygon. Is it possible? How can I do?" Foreground="White" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="18,5,0,0" FontSize="14" FontWeight="Thin"/>
+                        </ScrollViewer>
+                        <Grid Grid.Row="2" MouseEnter="AddonDownloadIcon_MouseEnter" MouseDown="AddonDownloadIcon_MouseDown" MouseLeave="AddonDownloadIcon_MouseLeave">
+                            <Grid Name="DownloadGrid">
+                                <Ellipse Visibility="Hidden" Name="Circle" Width="32" Height="32" Fill="#FF2DCB70"/>
+                                <Path Name="Icon"  Data="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" Fill="#FF2DCB70" Margin="94,21.583,93.333,20.584" Stretch="Fill"/>
+
+                            </Grid>
+                            <Label Name="InstalledLabel" Visibility="Hidden" Content="Already Installed" Foreground="#FF2DCB70" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <ProgressBar Maximum="100" Name="BottomProgressBar" Height="10"  Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Bottom" Foreground="#FF2DCB70"/>
+                        </Grid>
+
+
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

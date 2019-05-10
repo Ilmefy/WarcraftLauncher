@@ -35,8 +35,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,6 +60,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="src\Addons\Addon.cs" />
+    <Compile Include="src\Addons\AddonCategories.cs" />
+    <Compile Include="src\Addons\AddonGlobals.cs" />
+    <Compile Include="src\Addons\AddonInitializer.cs" />
+    <Compile Include="src\Addons\AddonInstalledValidator.cs" />
+    <Compile Include="src\Addons\InstalledAddons.cs" />
+    <Compile Include="src\Core\FileManager.cs" />
+    <Compile Include="src\Core\GameBuild.cs" />
+    <Compile Include="src\Core\Initializer.cs" />
+    <Compile Include="src\Core\PathVerificator.cs" />
+    <Compile Include="src\Core\ZipFileManager.cs" />
+    <Compile Include="src\Game\Game.cs" />
+    <Compile Include="src\Game\GameDataGatherer.cs" />
+    <Compile Include="src\Game\GameFileSearcher.cs" />
+    <Compile Include="View\AddonView\AddonControl.xaml.cs">
+      <DependentUpon>AddonControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddonView\AddonList.xaml.cs">
+      <DependentUpon>AddonList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewAddonGlobalControlsList.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -67,6 +93,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\AddonView\AddonControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddonView\AddonList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -86,6 +120,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

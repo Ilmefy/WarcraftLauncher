@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Launcher.src.Addons;
+using Launcher.src.Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,11 @@ namespace Launcher
         public MainWindow()
         {
             InitializeComponent();
+            var Launcher = GameDataGatherer.GetGameVersion(@"D:\World of Warcraft 3.3.5a (no install)");
+            var addonlist = src.Addons.AddonInitializer.Initialize();
+            Addon a = new Addon() { Name = "GearScore", DownloadUrl = "https://wow.curseforge.com/projects/big-wigs/files/2708418/download" };
+            a.Download();
+          //  src.Core.ZipFileManager.Extract(@"C:\Users\Kirialaa\Downloads\ButtonFacade-r333.zip", @"C:\Users\Kirialaa\Downloads",true);
         }
     }
 }
