@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="Launcher.View.Expansion.ExpansionButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Launcher.View.Expansion"
+             mc:Ignorable="d" 
+             xmlns:converter="clr-namespace:Launcher.View.Expansion"
+             d:DesignHeight="150" d:DesignWidth="100">
+    <UserControl.Resources>
+        <converter:ExpansionButtonHeightConverter  x:Key="HConverter"/>
+        <converter:MarkerButtonSizeConverter  x:Key="MConverter"/>
+    </UserControl.Resources>
+    <Grid  Name="MainGrid" Height="{Binding ElementName=MainGrid, Converter={StaticResource HConverter}, Path=ActualWidth }" Opacity="0.6" MouseDown="ExpansionButton_MouseDown" Uid="Inactive" MouseEnter="ExpansionButton_MouseEnter" MouseLeave="ExpansionButton_MouseLeave">
+        <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Add" Click="FindGame_Click"/>
+            </ContextMenu>
+        </Grid.ContextMenu>
+        <Image Panel.ZIndex="10" Name="Icon" Margin="10,10,20,10" Stretch="Fill" />
+        <!--  <Border Visibility="Hidden" Name="IconBorder" BorderThickness="3" Panel.ZIndex="100" Width="{Binding ElementName=Icon, Path=ActualWidth}" Height="{Binding ElementName=Icon, Path=ActualHeight}" Margin="{Binding ElementName=Icon, Path=Margin}" BorderBrush="Yellow" Opacity="0.3"/>-->
+        <Polygon Name="Triangle" Visibility="Hidden" Points="0,0 20,25, 0,50" Fill="Black" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Right"/>
+        <Image Name="Marker" Height="{Binding ElementName=MainGrid, Path=ActualHeight, Converter={StaticResource MConverter}}" Source="/View/Expansion/ExpansionIcons/W.png" Opacity="0.6"  Panel.ZIndex="100"/>
+
+
+    </Grid>
+</UserControl>

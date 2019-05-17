@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Launcher.View.AddonView"
              mc:Ignorable="d" 
              d:DesignHeight="215" d:DesignWidth="200">
-    <Border Name="Border" BorderThickness="0" BorderBrush="#FF2DCB70">
+    <Border Height="215" Width="200" Name="Border" BorderThickness="0" BorderBrush="#FF2DCB70">
 
 
         <Grid MouseEnter="Container_MouseEnter" MouseLeave="Container_MouseLeave">

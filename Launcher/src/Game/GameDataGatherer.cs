@@ -21,20 +21,9 @@ namespace Launcher.src.Game
             return ConvertFileVersionToGameBuild(FileVersionInfo.GetVersionInfo(GameFileSearcher.GetGamePath(Path)));
         }
         /// <summary>
-        /// Checks if Path leads to executable file
-        /// </summary>
-        /// <param name="GamePath"></param>
-        /// <returns></returns>
-        private static bool IsPathExecutableFile(string Path)
-        {
-            if (Path.Contains(".exe"))
-                return true;
-            return false;   
-        }
-        /// <summary>
         /// Converts FileVersionInfo to GameBuild
         /// </summary>
-        /// <param name="info"></param>
+        /// <param name="info">FileVersionInfo can be obtained from FileVersionInfo.GetVersionInfo method</param>
         /// <returns></returns>
         private static Core.GameBuild.Build ConvertFileVersionToGameBuild(FileVersionInfo info)
         {

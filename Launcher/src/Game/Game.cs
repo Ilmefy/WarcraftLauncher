@@ -9,6 +9,7 @@ namespace Launcher.src.Game
         public string GameDirectory { get; set; }
         public string GameLauncherPath { get; set; }
         public Core.GameBuild.Build Build { get; set; }
+        public Core.Expansion.Expansions Expansion { get; set; }
         public ObservableCollection<Addons.Addon> InstalledAddonsList = new ObservableCollection<Addons.Addon>();
         
         public Game()

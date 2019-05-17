@@ -8,9 +8,14 @@ namespace Launcher.src.Game
 {
     class GameFileSearcher
     {
-        public static string GetGamePath(string Path)
+        /// <summary>
+        /// Searches game launcher file in specified directory
+        /// </summary>
+        /// <param name="Directory"></param>
+        /// <returns></returns>
+        public static string GetGamePath(string Directory)
         {
-            var FilesInDirectory = System.IO.Directory.GetFiles(Path).ToList();
+            var FilesInDirectory = System.IO.Directory.GetFiles(Directory).ToList();
             return FilesInDirectory.Where(c => c.EndsWith("WoW.exe") || c.EndsWith("Wow.exe") || c.EndsWith("Wow-64.exe")).FirstOrDefault();
            
         }

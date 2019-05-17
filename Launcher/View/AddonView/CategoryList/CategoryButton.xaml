@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="Launcher.View.AddonView.CategoryList.CategoryButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Launcher.View.AddonView.CategoryList"
+             mc:Ignorable="d" 
+             d:DesignHeight="60" d:DesignWidth="320">
+    <Grid Name="Container" MouseDown="Container_MouseDown" MouseEnter="Container_MouseEnter" MouseLeave="Container_MouseLeave">
+        <Border Name="Border"  Visibility="Hidden" BorderThickness="0.5" BorderBrush="Gold" />
+        <Grid Margin="0,0,0,0">
+            <StackPanel Orientation="Horizontal">
+                <Image Name="Icon" Source="/View\AddonView\CategoryList\Icons\mage.png" Width="40" Height="40" HorizontalAlignment="Left" Margin="20,0,0,0"/>
+                <Label Name="CategoryNameLabel" Content="UI" FontSize="24" Foreground="White" FontWeight="Thin" VerticalContentAlignment="Center" Margin="20,0,0,0"/>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+
+
+</UserControl>

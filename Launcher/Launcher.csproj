@@ -35,13 +35,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.Core.3.2.0\lib\net45\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -64,8 +78,9 @@
     <Compile Include="src\Addons\AddonCategories.cs" />
     <Compile Include="src\Addons\AddonGlobals.cs" />
     <Compile Include="src\Addons\AddonInitializer.cs" />
-    <Compile Include="src\Addons\AddonInstalledValidator.cs" />
+    <Compile Include="src\Addons\GetAddons.cs" />
     <Compile Include="src\Addons\InstalledAddons.cs" />
+    <Compile Include="src\Core\Expansion.cs" />
     <Compile Include="src\Core\FileManager.cs" />
     <Compile Include="src\Core\GameBuild.cs" />
     <Compile Include="src\Core\Initializer.cs" />
@@ -74,13 +89,32 @@
     <Compile Include="src\Game\Game.cs" />
     <Compile Include="src\Game\GameDataGatherer.cs" />
     <Compile Include="src\Game\GameFileSearcher.cs" />
+    <Compile Include="src\Game\GameGlobals.cs" />
+    <Compile Include="View\AddonView\AddonConstants.cs" />
     <Compile Include="View\AddonView\AddonControl.xaml.cs">
       <DependentUpon>AddonControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddonView\AddonImageZoom.xaml.cs">
+      <DependentUpon>AddonImageZoom.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\AddonView\AddonList.xaml.cs">
       <DependentUpon>AddonList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ViewAddonGlobalControlsList.cs" />
+    <Compile Include="View\AddonView\CategoryList\CategoryButton.xaml.cs">
+      <DependentUpon>CategoryButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ColorConverter.cs" />
+    <Compile Include="View\Expansion\ExpansionButton.xaml.cs">
+      <DependentUpon>ExpansionButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Expansion\ExpansionButtonHeightConverter.cs" />
+    <Compile Include="View\Expansion\ExpansionList.xaml.cs">
+      <DependentUpon>ExpansionList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TopBar\TopMenu.xaml.cs">
+      <DependentUpon>TopMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddonView\ViewAddonGlobalControlsList.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -97,7 +131,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\AddonView\AddonImageZoom.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\AddonView\AddonList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddonView\CategoryList\CategoryButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Expansion\ExpansionButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Expansion\ExpansionList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TopBar\TopMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -125,9 +183,90 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="View\AddonView\CategoryList\Icons\ProfessionTemplate.psd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Icons\UIIcons\close.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View\Icons\Flags\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Icons\Backgrounds\WrathOfTheLichKing.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Expansion\ExpansionIcons\bfa.png" />
+    <Resource Include="View\Expansion\ExpansionIcons\cataclysm.png" />
+    <Resource Include="View\Expansion\ExpansionIcons\legion.png" />
+    <Resource Include="View\Expansion\ExpansionIcons\mop.png" />
+    <Resource Include="View\Expansion\ExpansionIcons\tbc.png" />
+    <Resource Include="View\Expansion\ExpansionIcons\vanilla.png" />
+    <Resource Include="View\Expansion\ExpansionIcons\wod.png" />
+    <Resource Include="View\Expansion\ExpansionIcons\wotlk.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Expansion\ExpansionIcons\W.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Icons\Backgrounds\BattleForAzeroth.jpg" />
+    <Resource Include="View\Icons\Backgrounds\Cataclysm.jpg" />
+    <Resource Include="View\Icons\Backgrounds\Legion.jpg" />
+    <Resource Include="View\Icons\Backgrounds\MistsOfPandaria.jpg" />
+    <Resource Include="View\Icons\Backgrounds\Vanilla.jpg" />
+    <Resource Include="View\Icons\Backgrounds\WarlordsOfDraenor.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Icons\UIIcons\Scroller.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\AddonView\CategoryList\Icons\Achievements.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\ActionBars.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Alchemy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\AddonView\CategoryList\Icons\Archaeology.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Archeology.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\AuctionEconomy.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Bags_Inventory.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Battle_Pets.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Blacksmithing.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Boss_Encounters.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Buffs_Debuffs.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Caster.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Chat_Communication.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Combat.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Companions.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Cooking.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Damage_Dealer.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Death_Knight.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Demon_Hunters.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Druid.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Enchanting.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Engineering.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\First_Aid.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Fishing.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Garrison.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Guild.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Healer.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Herbalism.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Hunter.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Inscription.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Mail.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Map_Minimap.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Miscellaneous.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Monk.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Paladin.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Priest.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Rogue.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Shaman.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Tank.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Warlock.png" />
+    <Resource Include="View\AddonView\CategoryList\Icons\Warrior.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

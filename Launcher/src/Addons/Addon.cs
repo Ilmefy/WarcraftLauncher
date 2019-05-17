@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Launcher.src.Addons
 {
-    public class Addon
+    public class Addon:ICloneable
     {
         public string Name { get; set; }
         public string Description { get; set; }
         public Core.GameBuild.Build Build { get; set; }
-        public AddonCategories Category { get; set; }
+        public AddonCategories.Categories Category { get; set; }
         public Core.GameBuild.Build InstalledForBuild { get; set; }
         public string DownloadUrl { get; set; }
         public string ImageUrl { get; set; }
@@ -31,13 +31,18 @@ namespace Launcher.src.Addons
                 client.DownloadFileAsync(uri, TemporaryPathForDownloadFile);
             }
         }
-
+        public bool HasBuild()
+        {
+            if (Build.HasFlag(Game.GameGlobals.SelectedGame.Build))
+                return true;
+            return false;
+        }
         private void Download_ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             
         }
         /// <summary>
-        /// Extracts File
+        /// Extracts File after download is completed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -47,6 +52,11 @@ namespace Launcher.src.Addons
             string AddonArchiveTemporaryPath = $"{System.IO.Path.GetTempPath()}\\{Name}.zip";
             Core.ZipFileManager.Extract(AddonArchiveTemporaryPath, "", true);
             
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }
