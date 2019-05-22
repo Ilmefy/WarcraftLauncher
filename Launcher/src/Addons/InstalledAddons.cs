@@ -25,5 +25,24 @@ namespace Launcher.src.Addons
             }
             
         }
+        public static bool IsAddonInstalled(string addonName, Game.Game game)
+        {
+            List<string> AddonDirectories = System.IO.Directory.GetFiles($"{game.GameDirectory}\\Inteface\\AddOns").ToList();
+            if (AddonDirectories.Contains(addonName))
+                return true;
+            return false;
+        }
+        public List<Addon> ReturnInstalledAddonsList(Game.Game game)
+        {
+            List<Addon> InstalledAddons = new List<Addon>();
+            List<string> AddonDirectories = System.IO.Directory.GetFiles($"{game.GameDirectory}\\Inteface\\AddOns").ToList();
+            foreach(string addonDirectory in AddonDirectories)
+            {
+
+                if (AddonGlobals.AddonList.Any(c => c.Name == addonDirectory))
+                    InstalledAddons.Add(AddonGlobals.AddonList.Where(c => c.Name == addonDirectory).FirstOrDefault());
+            }
+            return InstalledAddons;
+        }
     }
 }

@@ -81,9 +81,19 @@ namespace Launcher.View.AddonView.CategoryList
         #region Events
         private void Container_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            
             Active = true;
             if(src.Addons.AddonGlobals.CurrentlySelectedCategoryButton!=null)
+            {
                 src.Addons.AddonGlobals.CurrentlySelectedCategoryButton.Active = false;
+                if (src.Addons.AddonGlobals.CurrentlySelectedCategoryButton == this)
+                {
+                    src.Addons.AddonGlobals.CurrentlySelectedCategoryButton = null;
+                    return;
+                }
+                    
+            }
+                
             src.Addons.AddonGlobals.CurrentlySelectedCategoryButton = this;
         }
         private void Container_MouseEnter(object sender, MouseEventArgs e)
@@ -141,7 +151,7 @@ namespace Launcher.View.AddonView.CategoryList
         /// </summary>
         private void ChooseIcon()
         {
-            Uri uri = new Uri($"/View/AddonView/CategoryList/Icons/{AddonCategory.ToString()}.png", UriKind.Relative);
+            Uri uri = new Uri($"/View/Icons/CategoryList/Icons/{AddonCategory.ToString()}.png", UriKind.Relative);
             Icon.Source = new BitmapImage(uri);
         }
     }

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Launcher.View.AddonView"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid Background="#BF000000">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -14,10 +14,11 @@
             </Grid.RowDefinitions>
             <Grid Background="#99000000">
                 <Label Name="AddonNameLabel" Content="AddonName" Foreground="White" FontSize="20"/>
-                <Image Source="/View/Icons/UIIcons/close.png" Width="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Image Source="/View/Icons/UIIcons/close.png" Width="32" Height="32" MouseDown="Image_MouseDown" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,30,0"/>
             </Grid>
+            <Image Grid.Row="1" Name="Image" Source="/View/Icons/Backgrounds/Cataclysm.jpg"/>
         </Grid>
-        <Image Name="Image"/>
+        
 
     </Grid>
 </UserControl>

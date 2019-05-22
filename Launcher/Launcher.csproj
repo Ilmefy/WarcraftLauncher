@@ -44,6 +44,9 @@
     <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetZip, Version=1.13.3.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.13.3\lib\net40\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -81,6 +84,7 @@
     <Compile Include="src\Addons\GetAddons.cs" />
     <Compile Include="src\Addons\InstalledAddons.cs" />
     <Compile Include="src\Core\Expansion.cs" />
+    <Compile Include="src\Core\Extension.cs" />
     <Compile Include="src\Core\FileManager.cs" />
     <Compile Include="src\Core\GameBuild.cs" />
     <Compile Include="src\Core\Initializer.cs" />
@@ -88,8 +92,10 @@
     <Compile Include="src\Core\ZipFileManager.cs" />
     <Compile Include="src\Game\Game.cs" />
     <Compile Include="src\Game\GameDataGatherer.cs" />
+    <Compile Include="src\Game\GameDataVerifier.cs" />
     <Compile Include="src\Game\GameFileSearcher.cs" />
     <Compile Include="src\Game\GameGlobals.cs" />
+    <Compile Include="src\StartupParameters\Parameters.cs" />
     <Compile Include="View\AddonView\AddonConstants.cs" />
     <Compile Include="View\AddonView\AddonControl.xaml.cs">
       <DependentUpon>AddonControl.xaml</DependentUpon>
@@ -100,7 +106,7 @@
     <Compile Include="View\AddonView\AddonList.xaml.cs">
       <DependentUpon>AddonList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\AddonView\CategoryList\CategoryButton.xaml.cs">
+    <Compile Include="View\AddonView\CategoryButton.xaml.cs">
       <DependentUpon>CategoryButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ColorConverter.cs" />
@@ -139,7 +145,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\AddonView\CategoryList\CategoryButton.xaml">
+    <Page Include="View\AddonView\CategoryButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -183,7 +189,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="View\AddonView\CategoryList\Icons\ProfessionTemplate.psd" />
+    <None Include="View\Icons\CategoryList\Icons\ProfessionTemplate.psd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -224,49 +230,57 @@
     <Resource Include="View\Icons\UIIcons\Scroller.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\AddonView\CategoryList\Icons\Achievements.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\ActionBars.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Alchemy.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Achievements.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\ActionBars.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Alchemy.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\AddonView\CategoryList\Icons\Archaeology.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Archeology.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\AuctionEconomy.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Bags_Inventory.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Battle_Pets.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Blacksmithing.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Boss_Encounters.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Buffs_Debuffs.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Caster.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Chat_Communication.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Combat.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Companions.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Cooking.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Damage_Dealer.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Death_Knight.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Demon_Hunters.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Druid.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Enchanting.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Engineering.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\First_Aid.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Fishing.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Garrison.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Guild.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Healer.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Herbalism.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Hunter.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Inscription.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Mail.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Map_Minimap.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Miscellaneous.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Monk.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Paladin.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Priest.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Rogue.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Shaman.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Tank.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Warlock.png" />
-    <Resource Include="View\AddonView\CategoryList\Icons\Warrior.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Archaeology.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Archeology.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\AuctionEconomy.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Bags_Inventory.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Battle_Pets.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Blacksmithing.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Boss_Encounters.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Buffs_Debuffs.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Caster.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Chat_Communication.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Combat.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Companions.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Cooking.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Damage_Dealer.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Death_Knight.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Demon_Hunters.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Druid.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Enchanting.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Engineering.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\First_Aid.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Fishing.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Garrison.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Guild.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Healer.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Herbalism.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Hunter.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Inscription.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Mail.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Map_Minimap.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Miscellaneous.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Monk.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Paladin.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Priest.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Rogue.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Shaman.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Tank.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Warlock.png" />
+    <Resource Include="View\Icons\CategoryList\Icons\Warrior.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Icons\UIIcons\Calendar.png" />
+    <Resource Include="View\Icons\UIIcons\Discord.png" />
+    <Resource Include="View\Icons\UIIcons\facebook.png" />
+    <Resource Include="View\Icons\UIIcons\Search.png" />
+    <Resource Include="View\Icons\UIIcons\time.png" />
+    <Resource Include="View\Icons\UIIcons\W.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,7 +11,7 @@ namespace Launcher.src.Addons
        
         public enum Categories : UInt64
         {
-            None=0,
+            All=0,
             Achievements = 0x1,
             ActionBars = 0x2,
             Alchemy = 0x4,
@@ -73,6 +73,13 @@ namespace Launcher.src.Addons
             Unit_Frames = 1L << 58,
             Warlock = 1L << 59,
             Warrior = 1L << 60,
+        }
+        public static Categories GetCategoryByCategoryIcon(string IconSource)
+        {
+            string CategoryName = System.Text.RegularExpressions.Regex.Replace(IconSource, "pack://application:,,,/View/Icons/CategoryList/Icons/", string.Empty);
+            CategoryName = System.Text.RegularExpressions.Regex.Replace(CategoryName, ".jpg", string.Empty);
+            CategoryName = System.Text.RegularExpressions.Regex.Replace(CategoryName, ".png", string.Empty);
+            return (Categories)Enum.Parse(typeof(Categories), CategoryName);
         }
     }
 }

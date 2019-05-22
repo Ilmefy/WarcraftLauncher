@@ -9,6 +9,6 @@ namespace Launcher.src.Game
     class GameGlobals
     {
         public static Game SelectedGame { get; set; }
-        
+        public static List<Game> InstalledGames = new List<Game>();
     }
 }

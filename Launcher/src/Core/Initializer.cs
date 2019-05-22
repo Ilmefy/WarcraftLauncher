@@ -16,8 +16,9 @@ namespace Launcher.src.Core
         public static void InitializeApplication()
         {
             //Brak bazy danych
-            //Addons.AddonGlobals.AddonList= Addons.AddonInitializer.Initialize();
-            
+            Addons.AddonGlobals.AddonList= Addons.AddonInitializer.Initialize();
+            Addons.AddonGlobals.AddonQueue =(List<Addon>)Addons.AddonGlobals.AddonList.Clone<Addon>();
+            AddonInitializer.CreateAddonList();
             InitializeCategoryButtonsForAddons();
 
         }
@@ -36,5 +37,6 @@ namespace Launcher.src.Core
                 //MainWindow.Instance.AddonList.CategoryStackPanel.Children.Add(cb);
             }
         }
+        
     }
 }

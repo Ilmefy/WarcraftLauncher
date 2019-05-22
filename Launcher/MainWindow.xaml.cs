@@ -1,6 +1,7 @@
 ﻿using Launcher.src.Addons;
 using Launcher.src.Core;
 using Launcher.src.Game;
+using Launcher.src.StartupParameters;
 using Launcher.View.AddonView;
 using Launcher.View.AddonView.CategoryList;
 using System;
@@ -30,12 +31,23 @@ namespace Launcher
         {
             InitializeComponent();
             Instance = this;
+            var args = Environment.GetCommandLineArgs();
+            if(args.Length>1)
+            {
+                Parameters.CheckParameters();
+            }
 
             Style s = new Style();
             s.Setters.Add(new Setter(UIElement.VisibilityProperty, Visibility.Collapsed));
             TabControl.ItemContainerStyle = s;
             #region Used to create simple addoncontrol
             //Addon a = new Addon() { Name = "Sunwell", Build = GameBuild.Build.WrathOfTheLichKing_3_3_5, Category=AddonCategories.Categories.Archeology };
+            //Addon b = new Addon() { Name = "Sunwell", Build = GameBuild.Build.WrathOfTheLichKing_3_3_5, Category=AddonCategories.Categories.PvP };
+            //List<Addon> addons = new List<Addon>();
+            //addons.Add(a);
+            //addons.Add(b);
+            
+            //System.IO.File.WriteAllText(@"C:\Users\Kirialaa\Desktop\addoniki.txt", Newtonsoft.Json.JsonConvert.SerializeObject(addons));
             //Game g = new Game() { Build = GameBuild.Build.WrathOfTheLichKing_3_3_5 };
             //GameGlobals.SelectedGame = g;
             //AddonGlobals.AddonQueue.Add(a);
@@ -51,7 +63,10 @@ namespace Launcher
 
             //  src.Core.ZipFileManager.Extract(@"C:\Users\Kirialaa\Downloads\ButtonFacade-r333.zip", @"C:\Users\Kirialaa\Downloads",true);
         }
-
+        private void xd()
+        {
+            string s = "";
+        }
         private void TopMenu_MouseDown(object sender, MouseButtonEventArgs e)
         {
             //if (e.ClickCount == 2 && e.LeftButton == MouseButtonState.Pressed)

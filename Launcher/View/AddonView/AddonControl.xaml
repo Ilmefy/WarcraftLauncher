@@ -5,11 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Launcher.View.AddonView"
              mc:Ignorable="d" 
-             d:DesignHeight="215" d:DesignWidth="200">
-    <Border Height="215" Width="200" Name="Border" BorderThickness="0" BorderBrush="#FF2DCB70">
+             d:DesignHeight="215" d:DesignWidth="250">
+    <Grid Width="250"  MouseEnter="Container_MouseEnter" MouseLeave="Container_MouseLeave" Background="#00000000">
+        <ScrollViewer Height="215"  Name="CategoryIconScrollViewer" Width="70" HorizontalAlignment="Right" Margin="70,0" >
+            <StackPanel    x:Name="CategoryIcons" Width="{Binding ElementName=CategoryIconScrollViewer, Path=ActualWidth}" HorizontalAlignment="Stretch">
+              
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Height="215" Width="200" Name="Border" BorderThickness="2" HorizontalAlignment="Left" >
 
 
-        <Grid MouseEnter="Container_MouseEnter" MouseLeave="Container_MouseLeave">
+        <Grid >
             <Grid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Show full sized image" Click="MenuItem_Click"/>
@@ -38,10 +45,10 @@
                         <Grid Grid.Row="2" MouseEnter="AddonDownloadIcon_MouseEnter" MouseDown="AddonDownloadIcon_MouseDown" MouseLeave="AddonDownloadIcon_MouseLeave">
                             <Grid Name="DownloadGrid">
                                 <Ellipse Visibility="Hidden" Name="Circle" Width="32" Height="32" Fill="#FF2DCB70"/>
-                                <Path Name="Icon"  Data="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" Fill="#FF2DCB70" Margin="94,21.583,93.333,20.584" Stretch="Fill"/>
+                                <Path Name="DownloadIcon"  Data="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" Fill="#FF2DCB70" Margin="94,21.583,93.333,20.584" Stretch="Fill"/>
 
                             </Grid>
-                            <Label Name="InstalledLabel" Visibility="Hidden" Content="Already Installed" Foreground="#FF2DCB70" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Label Name="InstallingStateLabel" Visibility="Hidden" Content="Already Installed"  VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                         </Grid>
                         <Grid Grid.Row="3">
@@ -54,4 +61,6 @@
             </Grid>
         </Grid>
     </Border>
+
+    </Grid>
 </UserControl>

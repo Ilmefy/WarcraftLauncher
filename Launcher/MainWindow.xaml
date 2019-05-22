@@ -9,8 +9,8 @@
     
     AllowsTransparency="True"
         Title="MainWindow" Height="800" Width="1600" WindowStyle="None" ResizeMode="CanResizeWithGrip">
-    <Grid>
-        <AddonView:AddonImageZoom x:Name="AddonImageZoom" Visibility="Hidden"/>
+    <Grid Name="MainWindowContainer">
+        <AddonView:AddonImageZoom Visibility="Hidden" Panel.ZIndex="10000000" Width="{Binding ElementName=MainWindowContainer, Path=ActualWidth}" Height="{Binding ElementName=MainWindowContainer, Path=ActualHeight}" x:Name="AddonImageZoom" />
         <Image Source="/View/Icons/Backgrounds/Legion.jpg" x:Name="BackgroundImage" Stretch="UniformToFill"/>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -19,6 +19,7 @@
             </Grid.ColumnDefinitions>
             <!--Left bar-->
             <Grid>
+                
                 <Image Source="{Binding ElementName=BackgroundImage, Path=Source}" x:Name="LeftBarImage" Stretch="None">
                     <Image.Effect>
                         <BlurEffect Radius="25"/>
@@ -38,7 +39,7 @@
                 <Grid>
                     <!--TopBarColor also serves as handle -->
                     <Grid x:Name="TopBarColor" Background="#CC954848" MouseDown="TopMenu_MouseDown" />
-                    <TopBar:TopMenu MouseDown="TopMenu_MouseDown" />
+                    <TopBar:TopMenu x:Name="TopBarMenu" MouseDown="TopMenu_MouseDown" />
                 </Grid>
 
                 <TabControl x:Name="TabControl"  Grid.Row="1" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Padding="-1,-2">

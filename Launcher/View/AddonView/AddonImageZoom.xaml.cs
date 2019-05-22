@@ -25,5 +25,9 @@ namespace Launcher.View.AddonView
             InitializeComponent();
         }
 
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Visibility = Visibility.Hidden;
+        }
     }
 }

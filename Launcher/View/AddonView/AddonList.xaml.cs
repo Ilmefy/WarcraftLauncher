@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using Launcher.src.Core;
 namespace Launcher.View.AddonView
 {
     /// <summary>
@@ -59,6 +59,8 @@ namespace Launcher.View.AddonView
             {
                 AddonControl ac = new AddonControl(addon);
                 AddonContainer.Dispatcher.Invoke(() => AddonContainer.Children.Add(Dispatcher.Invoke(() =>ac)));
+                ac.Margin = new Thickness(0, 20, 20, 0);
+
                 ViewAddonGlobalControlsList.AddonControlList.Add(ac);
             }
         }
@@ -96,5 +98,50 @@ namespace Launcher.View.AddonView
         }
 
 
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var text = (sender as TextBox).Text;
+            if (string.IsNullOrEmpty(text) || text=="Search")
+                return;
+            ShowAddonsNameContains(text);
+
+        }
+        public void ShowAddonsNameContains(string phrase)
+        {
+            //&& c.HasBuild()
+            List<Addon> addonsContainsPhrase = AddonGlobals.AddonList.Where(c => c.Name.ContainsWithComparer(phrase)).ToList();
+            //foreach (Addon addon in addonsContainsPhrase)
+            //{
+            //    ViewAddonGlobalControlsList.AddonControlList.Where(c => c.Addon.Name.Equals( addon.Name)).FirstOrDefault().Visibility = Visibility.Visible;
+            //}
+            foreach (Addon addon in addonsContainsPhrase)
+            {
+                ViewAddonGlobalControlsList.AddonControlList.Where(c => c.Addon != addon).FirstOrDefault().Visibility = Visibility.Collapsed;
+            }
+            int addonContainsPhraseCount = addonsContainsPhrase.Count;
+            if(addonContainsPhraseCount<AddonConstants.HOW_MUCH_ADDONS_SHOW_AT_SCROLL)
+            {
+                List<Addon> addonsToGenerate = new List<Addon>();
+                int HowMuchNeed = AddonConstants.HOW_MUCH_ADDONS_SHOW_AT_SCROLL - addonContainsPhraseCount;
+                    addonsToGenerate = AddonGlobals.AddonQueue.Where(c => c.Name.ContainsWithComparer(phrase)).Take(HowMuchNeed).ToList();
+                AddAddonControls(addonsToGenerate);
+            }
+            
+        }
+
+        private void TextBox_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            (sender as TextBox).Text = "";
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            (sender as TextBox).Text = "";
+        }
+        public UIElementCollection ReturnCategoryControls()
+        {
+            return CategoryStackPanel.Children;
+        }
     }
 }

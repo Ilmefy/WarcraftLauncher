@@ -21,7 +21,11 @@ namespace Launcher.src.Addons
         }
         private static void OnAddonCategoryChange()
         {
-            MainWindow.Instance.AddonList.ShowAddonsForCategory(CurrentlySelectedCategoryButton.AddonCategory);
+            if (CurrentlySelectedCategoryButton != null)
+                MainWindow.Instance.AddonList.ShowAddonsForCategory(CurrentlySelectedCategoryButton.AddonCategory);
+            else
+                MainWindow.Instance.AddonList.ShowAddonsForCategory(AddonCategories.Categories.All);
+            
         }
 
 

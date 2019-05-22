@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Launcher.View.AddonView;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -19,17 +20,34 @@ namespace Launcher.src.Addons
         /// <summary>
         /// Initializes downloading addon
         /// </summary>
-        public void Download()
+        public void Download(AddonControl addonControlSender)
         {
             using (WebClient client = new WebClient())
             {
+                if (string.IsNullOrEmpty(DownloadUrl))
+                {
+                    (addonControlSender as View.AddonView.AddonControl).DownloadingFailed();
+                    return;
+                }
+                    
                 string TemporaryPathForDownloadFile = $"{System.IO.Path.GetTempPath()}\\{Name}.zip";
-                client.DownloadFileCompleted += Download_Completed;
+                client.DownloadFileCompleted += (sender, e) => Download_Completed(sender, e, addonControlSender);
                 client.DownloadProgressChanged += Download_ProgressChanged;
                 var uri = new Uri(DownloadUrl);
 
                 client.DownloadFileAsync(uri, TemporaryPathForDownloadFile);
             }
+        }
+        public List<Enum> GetCategoryFlags()
+        {
+            List<Enum> categories = new List<Enum>();
+            foreach(Enum e in Enum.GetValues(typeof(AddonCategories.Categories)))
+            {
+                if (Category.HasFlag(e))
+                    categories.Add(e);
+
+            }
+            return categories;
         }
         public bool HasBuild()
         {
@@ -47,11 +65,12 @@ namespace Launcher.src.Addons
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <param name="FileName"></param>
-        private void Download_Completed(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        private void Download_Completed(object sender, System.ComponentModel.AsyncCompletedEventArgs e, View.AddonView.AddonControl addonControlSender)
         {
             string AddonArchiveTemporaryPath = $"{System.IO.Path.GetTempPath()}\\{Name}.zip";
-            Core.ZipFileManager.Extract(AddonArchiveTemporaryPath, "", true);
+            Core.ZipFileManager.Extract(AddonArchiveTemporaryPath, @"C:\World of Warcraft 3.3.5a (no install)\Interface\AddOns", true, addonControlSender);
             
+
         }
 
         public object Clone()
