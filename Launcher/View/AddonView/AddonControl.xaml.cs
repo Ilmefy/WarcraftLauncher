@@ -194,6 +194,8 @@ namespace Launcher.View.AddonView
         {
             src.Addons.AddonCategories.Categories category = src.Addons.AddonCategories.GetCategoryByCategoryIcon((sender as Image).Source.ToString());
             var CategoryControlsList = MainWindow.Instance.AddonList.ReturnCategoryControls().Cast<CategoryList.CategoryButton>().ToList();
+            if (src.Addons.AddonGlobals.CurrentlySelectedCategoryButton != null)
+                src.Addons.AddonGlobals.CurrentlySelectedCategoryButton.Active = false;
             src.Addons.AddonGlobals.CurrentlySelectedCategoryButton = CategoryControlsList.Where(c => c.AddonCategory == category).FirstOrDefault();
         }
     }

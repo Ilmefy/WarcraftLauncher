@@ -46,10 +46,10 @@ namespace Launcher
             //List<Addon> addons = new List<Addon>();
             //addons.Add(a);
             //addons.Add(b);
-            
+
             //System.IO.File.WriteAllText(@"C:\Users\Kirialaa\Desktop\addoniki.txt", Newtonsoft.Json.JsonConvert.SerializeObject(addons));
-            //Game g = new Game() { Build = GameBuild.Build.WrathOfTheLichKing_3_3_5 };
-            //GameGlobals.SelectedGame = g;
+            Game g = new Game() { Build = GameBuild.Build.WrathOfTheLichKing_3_3_5 };
+            GameGlobals.SelectedGame = g;
             //AddonGlobals.AddonQueue.Add(a);
             //AddonControl ac = new AddonControl(a);
             //MainWindow.Instance.AddonList.AddAddonControls(AddonGlobals.AddonQueue);

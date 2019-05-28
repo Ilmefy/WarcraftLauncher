@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Launcher.src.Core;
+using Launcher.src.Game;
+
 namespace Launcher.View.AddonView
 {
     /// <summary>
@@ -59,11 +61,28 @@ namespace Launcher.View.AddonView
             {
                 AddonControl ac = new AddonControl(addon);
                 AddonContainer.Dispatcher.Invoke(() => AddonContainer.Children.Add(Dispatcher.Invoke(() =>ac)));
+                ac.MouseWheel += Ac_MouseWheel;
                 ac.Margin = new Thickness(0, 20, 20, 0);
 
                 ViewAddonGlobalControlsList.AddonControlList.Add(ac);
+                AddonGlobals.AddonQueue.Remove(addon);
             }
         }
+
+        private void Ac_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+     
+            if (ScrollViewer.VerticalOffset < ScrollViewer.ScrollableHeight)
+                return;
+            var CurrentAddonCount = AddonContainer.Children.Count;
+            if (SearchBarTextBox.Text != "Search" && !string.IsNullOrEmpty(SearchBarTextBox.Text))
+            {
+                List<Addon> addonsByName = AddonGlobals.AddonQueue.Where(c => c.Name.ContainsWithComparer(SearchBarTextBox.Text)).ToList();
+                addonsByName = addonsByName.Take(AddonConstants.HOW_MUCH_ADDONS_SHOW_AT_SCROLL).ToList();
+                MainWindow.Instance.AddonList.AddAddonControls(addonsByName);
+            }
+        }
+
         /// <summary>
         /// Shows addons for specific category
         /// </summary>
@@ -84,52 +103,56 @@ namespace Launcher.View.AddonView
             }
             if (items < AddonConstants.HOW_MUCH_ADDONS_SHOW_AT_SCROLL)
             {
-
+                GenerateMissingAddons((AddonConstants.HOW_MUCH_ADDONS_SHOW_AT_SCROLL - items));
             }
 
         }
-        private void GenerateMissingAddons(AddonCategories.Categories Category, int items)
+        private List<Addon> GenerateMissingAddons(AddonCategories.Categories Category, int items)
         {
-            for (int i = 0; i < (AddonConstants.HOW_MUCH_ADDONS_SHOW_AT_SCROLL - items); i++)
-            {
-                Addon addon = AddonGlobals.AddonQueue.Where(c => c.Category.HasFlag(Category)).Where(c => c.HasBuild()).FirstOrDefault();
-                AddonControl ac = new AddonControl(AddonGlobals.AddonQueue.Where(c => c.Category.HasFlag(Category)).Where(c => c.HasBuild()).FirstOrDefault());
-            }
+            return AddonGlobals.AddonQueue.Where(c => c.Category == Category).Where(c => c.Build == GameGlobals.SelectedGame.Build).Take(items).ToList();
         }
-
-
+        private List<Addon> GenerateMissingAddons(string Phrase, AddonCategories.Categories Category, int items)
+        {
+            return  AddonGlobals.AddonQueue.Where(c => c.Name.ContainsWithComparer(Phrase)).Where(c => c.Category == Category).Where(c=>c.Build==GameGlobals.SelectedGame.Build).Take(items).ToList();
+        }
+        private List<Addon> GenerateMissingAddons(int items)
+        {
+            
+            return AddonGlobals.AddonQueue.Take(items).Where(c => c.Build == GameGlobals.SelectedGame.Build).ToList();
+        }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             var text = (sender as TextBox).Text;
             if (string.IsNullOrEmpty(text) || text=="Search")
                 return;
-            ShowAddonsNameContains(text);
+                ShowAddonsNameContains(text);
+                
 
         }
         public void ShowAddonsNameContains(string phrase)
         {
-            //&& c.HasBuild()
-            List<Addon> addonsContainsPhrase = AddonGlobals.AddonList.Where(c => c.Name.ContainsWithComparer(phrase)).ToList();
-            //foreach (Addon addon in addonsContainsPhrase)
-            //{
-            //    ViewAddonGlobalControlsList.AddonControlList.Where(c => c.Addon.Name.Equals( addon.Name)).FirstOrDefault().Visibility = Visibility.Visible;
-            //}
-            foreach (Addon addon in addonsContainsPhrase)
+            int counter = 0;
+            foreach(AddonControl ac in ViewAddonGlobalControlsList.AddonControlList)
             {
-                ViewAddonGlobalControlsList.AddonControlList.Where(c => c.Addon != addon).FirstOrDefault().Visibility = Visibility.Collapsed;
+                if (ac.Addon.Name.ContainsWithComparer(phrase))
+                {
+                    ac.Visibility = Visibility.Visible;
+                    counter++;
+                }
+                else
+                    ac.Visibility = Visibility.Collapsed;
             }
-            int addonContainsPhraseCount = addonsContainsPhrase.Count;
-            if(addonContainsPhraseCount<AddonConstants.HOW_MUCH_ADDONS_SHOW_AT_SCROLL)
+            if (counter < AddonConstants.HOW_MUCH_ADDONS_SHOW_AT_SCROLL)
             {
-                List<Addon> addonsToGenerate = new List<Addon>();
-                int HowMuchNeed = AddonConstants.HOW_MUCH_ADDONS_SHOW_AT_SCROLL - addonContainsPhraseCount;
-                    addonsToGenerate = AddonGlobals.AddonQueue.Where(c => c.Name.ContainsWithComparer(phrase)).Take(HowMuchNeed).ToList();
-                AddAddonControls(addonsToGenerate);
-            }
-            
-        }
 
+                if (AddonGlobals.CurrentlySelectedCategoryButton != null)
+                    GenerateMissingAddons(AddonGlobals.CurrentlySelectedCategoryButton.AddonCategory, (AddonConstants.HOW_MUCH_ADDONS_SHOW_AT_SCROLL - counter));
+                else
+                    GenerateMissingAddons((AddonConstants.HOW_MUCH_ADDONS_SHOW_AT_SCROLL - counter));
+            }
+
+        }
         private void TextBox_MouseDown(object sender, MouseButtonEventArgs e)
         {
             (sender as TextBox).Text = "";
@@ -142,6 +165,34 @@ namespace Launcher.View.AddonView
         public UIElementCollection ReturnCategoryControls()
         {
             return CategoryStackPanel.Children;
+        }
+
+        private void CategoryScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+
+        }
+        /// <summary>
+        /// Occurs while scrolling addons
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (ScrollViewer.VerticalOffset < ScrollViewer.ScrollableHeight)
+                return;
+            var CurrentAddonCount = AddonContainer.Children.Count;
+            List<Addon> addons = new List<Addon>();
+            if (SearchBarTextBox.Text != "Search" && !string.IsNullOrEmpty(SearchBarTextBox.Text))
+            {
+                if (AddonGlobals.CurrentlySelectedCategoryButton != null)
+                    addons = AddonGlobals.GetAddonsFromQueueWithParameter(SearchBarTextBox.Text, AddonGlobals.CurrentlySelectedCategoryButton.AddonCategory);
+                else
+                    addons = AddonGlobals.GetAddonsFromQueueWithParameter(SearchBarTextBox.Text);
+                
+            }
+            else
+                addons = AddonGlobals.AddonQueue.Take(AddonConstants.HOW_MUCH_ADDONS_SHOW_AT_SCROLL).ToList();
+            MainWindow.Instance.AddonList.AddAddonControls(addons);
         }
     }
 }
